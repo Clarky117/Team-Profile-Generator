@@ -18,8 +18,9 @@ const inquirer = require('inquirer');
 //     },
 // ])
 
-function initialise() {
+// move functions outside initialise
 
+function initialise() {
     function engineer() {
         inquirer.prompt([
             {
@@ -32,6 +33,7 @@ function initialise() {
             addNewEmployee()
         })
     }
+
 
     function intern() {
         console.log('1');
@@ -48,6 +50,7 @@ function initialise() {
     }
 
     function addNewEmployee() {
+        // retunr
         inquirer.prompt([
             {
                 type: 'list',
@@ -72,6 +75,9 @@ function initialise() {
             }
             if (answer.proceed === 'Terminate') {
                 console.log('Terminate');
+                
+                // run html logic here
+
                 return;
             }
         })
@@ -88,10 +94,7 @@ function initialise() {
             console.log(answers);
             addNewEmployee()
         })
-    }
-
-
-    
+    }    
 
     manager()
 
