@@ -3,15 +3,20 @@ const inquirer = require('inquirer');
 const Manager = require('./src/employees/manager');
 const Engineer = require('./src/employees/engineer');
 const Intern = require('./src/employees/intern');
+const generateHTML = require('./src/generate-html/generate-html');
+const fs = require('fs');
+const path = require('path');
 
 const employees = [];
+const outputtedHtmlFile = path.join(__dirname, 'output', 'team.html')
+
 
 async function main () {
-
+    
     const managerRole = 'manager';
     const engineerRole = 'engineer';
     const internRole = 'intern';
-
+    
     const answers = await inquirer.prompt([
         {
             type: 'list',
@@ -21,6 +26,7 @@ async function main () {
                 managerRole, engineerRole, internRole,
             ]
         },
+        // id, name, email
         {
             type: 'input',
             message: 'What is the Employee ID?',
@@ -36,28 +42,35 @@ async function main () {
             message: `What is the Employee's name?`,
             name: 'name',
         },
-
+        
+        // manager
+        // office number
         {
             type: 'input',
             message: 'What is the office number?',
             name: 'number',
             when: (answers) => answers.role === managerRole,
         },
-
+        
+        // engineer
+        // github
         {
             type: 'input',
             message: `What is the Engineer's github username?`,
             name: 'github',
             when: (answers) => answers.role === engineerRole,
         },
-
+        
+        // intern
+        // school
         {
             type: 'input',
             message: `What is the Intern's school?`,
             name: 'school',
             when: (answers) => answers.role === internRole,
         },
-
+        
+        // keep asking to add new employee until we terminate
         {
             type: 'confirm',
             message: 'Would you like the add another Employee?',
@@ -65,9 +78,10 @@ async function main () {
         }
 
     ])
-
+    
     // once we have the employee, store the data
     // check for the role
+    // create employee object based on said role and push to array
     if(answers.role === managerRole){
         employees.push(new Manager(answers.id, answers.email, answers.name, answers.number));
     }
@@ -80,37 +94,24 @@ async function main () {
         employees.push(new Intern(answers.id, answers.email, answers.name, answers.school));
     }
 
+
 console.log(employees)
 
-    // create employee object based on said role
 
-    // add employees to the above empty array employees
     
     // once the user terminates, we will generate the html based on all the employees collected
     if(!answers.add){
         // generate html
+        const html = generateHTML(employees);
+        // use fs
+        fs.writeFileSync(outputtedHtmlFile, html, 'utf8');        
+
     }else{
         await main();
     }
 
 }
 
-
 main();
 
-
-
 // generate team profile
-
-// keep asking to add new employee until we terminate
-
-// id, name, email
-
-// manager
-// office number
-
-// engineer
-// github
-
-// intern
-// school
