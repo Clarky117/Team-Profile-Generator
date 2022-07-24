@@ -17,7 +17,7 @@ function createHtmlCard(employee){
     let replacedCard = cardTemplate.replace('{{name}}', employee.getName())
         .replace('{{role}}', employee.getRole())
         .replace('{{id}}', employee.getId())
-        .replace('{{email}}', employee.getEmail());
+        .replace('{{email}}', `<a href="mailto:${employee.getEmail()}">${employee.getEmail()}</a>`);
 
         if (employee.getRole() === 'Manager'){
             replacedCard = replacedCard.replace('{{attribute_key}}', 'Office Number: ')
@@ -26,7 +26,7 @@ function createHtmlCard(employee){
 
         if (employee.getRole() === 'Engineer'){
             replacedCard = replacedCard.replace('{{attribute_key}}', 'Github: ')
-                .replace('{{attribute_value}}', employee.getGithub());
+                .replace('{{attribute_value}}', `<a href="https://github.com/${employee.getGithub()}">${employee.getGithub()}</a>`);
         }
 
         if (employee.getRole() === 'Intern'){
@@ -46,6 +46,8 @@ function generateHTML(employees){
 
     // loop through employee array and generate a card for each employee
     const cards = employees.map(createHtmlCard).join('');
+
+    // console.log('Generated Successfully')
 
     // then, join cards into 1 string
     // replace {{body}} with this generatedHTML string

@@ -1,11 +1,13 @@
-<section>
-    
-    <h3>{{name}}</h3>
+<section class="card bg-light mx-4 my-3 col-lg-3 d-flex align-items-stretch">  
+    <section class="card-body">
 
-    <p>Role: {{role}}</p>
-    <p>ID: {{id}}</p>
-    <p>Email: {{email}}</p>
+        <h3 class="card-title">{{name}}</h3>
 
-    <p>{{attribute_key}}: {{attribute_value}}</p>
+        <h4 class="card-text pb-3">{{role}}</h4>
+        <p class="card-text">ID: {{id}}</p>
+        <p class="card-text">Email: {{email}}</p>
 
-</section>
+        <p class="card-text">{{attribute_key}}{{attribute_value}}</p>
+
+    </section>
+</section>  

@@ -1,104 +1,117 @@
-const inquirer = require('inquirer'); 
+const inquirer = require('inquirer');
 
-// inquirer.prompt([
-//     {
-//         type: 'input',
-//         message: `Team manager's name?`,
-//         name: 'manager-name',
-//     },
-//     {
-//         type: 'input',
-//         message: `Employee id?`,
-//         name: 'id',   
-//     },
-//     {
-//         type: 'email',
-//         message: `Employee id?`,
-//         name: 'email',   
-//     },
-// ])
+const Manager = require('./src/employees/manager');
+const Engineer = require('./src/employees/engineer');
+const Intern = require('./src/employees/intern');
+const generateHTML = require('./src/generate-html/generate-html');
+const fs = require('fs');
+const path = require('path');
 
-// move functions outside initialise
+const employees = [];
+const outputtedHtmlFile = path.join(__dirname, 'output', 'team.html')
 
-function initialise() {
-    function engineer() {
-        inquirer.prompt([
-            {
-                type: 'input',
-                message: 'What is your name?',
-                name: 'name',
-            }
-        ]).then((answer) => {
-            console.log('Employee name:', answer);
-            addNewEmployee()
-        })
+
+async function main () {
+    
+    const managerRole = 'manager';
+    const engineerRole = 'engineer';
+    const internRole = 'intern';
+    
+    const answers = await inquirer.prompt([
+        {
+            type: 'list',
+            message: `What is the Employee's role?`,
+            name: 'role',
+            choices: [
+                managerRole, engineerRole, internRole,
+            ]
+        },
+        // id, name, email
+        {
+            type: 'input',
+            message: 'What is the Employee ID?',
+            name: 'id',            
+        },
+        {
+            type: 'input',
+            message: 'What is the Employee Email?',
+            name: 'email',
+        },
+        {
+            type: 'input',
+            message: `What is the Employee's name?`,
+            name: 'name',
+        },
+        
+        // manager
+        // office number
+        {
+            type: 'input',
+            message: 'What is the office number?',
+            name: 'number',
+            when: (answers) => answers.role === managerRole,
+        },
+        
+        // engineer
+        // github
+        {
+            type: 'input',
+            message: `What is the Engineer's github username?`,
+            name: 'github',
+            when: (answers) => answers.role === engineerRole,
+        },
+        
+        // intern
+        // school
+        {
+            type: 'input',
+            message: `What is the Intern's school?`,
+            name: 'school',
+            when: (answers) => answers.role === internRole,
+        },
+        
+        // keep asking to add new employee until we terminate
+        {
+            type: 'confirm',
+            message: 'Would you like the add another Employee?',
+            name: 'add',
+        }
+
+    ])
+    
+    // once we have the employee, store the data
+    // check for the role
+    // create employee object based on said role and push to array
+    if(answers.role === managerRole){
+        employees.push(new Manager(answers.id, answers.email, answers.name, answers.number));
+    }
+
+    if(answers.role === engineerRole){
+        employees.push(new Engineer(answers.id, answers.email, answers.name, answers.github));
+    }
+
+    if(answers.role === internRole){
+        employees.push(new Intern(answers.id, answers.email, answers.name, answers.school));
     }
 
 
-    function intern() {
-        console.log('1');
-        inquirer.prompt([
-            {
-                type: 'input',
-                message: 'What is your name?',
-                name: 'name',
-            }
-        ]).then((answer) => {
-            console.log('Intern name:', answer);
-            addNewEmployee()
-        })
+console.log(employees)
+
+
+    
+    // once the user terminates, we will generate the html based on all the employees collected
+    if(!answers.add){
+        // generate html
+        const html = generateHTML(employees);
+        // use fs
+        fs.writeFileSync(outputtedHtmlFile, html, 'utf8');        
+
+    }else{
+        await main();
     }
 
-    function addNewEmployee() {
-        // retunr
-        inquirer.prompt([
-            {
-                type: 'list',
-                message: 'How would you like to proceed',
-                name: 'proceed',
-                choices: [
-                    'Engineer', 'Intern', 'Terminate',
-                ]
-            }
-        ]).then((answer) => {
-            console.log(answer);
-            if (answer.proceed === 'Engineer') {
-                console.log(3)
-                // console.log('Engineer');
-                engineer()
-                // call function engineer
-            }
-            if (answer.proceed === 'Intern') {
-                // console.log('Intern');
-                
-                intern()
-            }
-            if (answer.proceed === 'Terminate') {
-                console.log('Terminate');
-                
-                // run html logic here
-
-                return;
-            }
-        })
-    }
-
-    function manager() {
-        inquirer.prompt([
-            {
-                type: 'input',
-                message: `Team manager's name?`,
-                name: 'manager-name',
-            }
-        ]).then((answers) => {
-            console.log(answers);
-            addNewEmployee()
-        })
-    }    
-
-    manager()
-
-    // engineer or an intern or to finish
 }
 
-initialise()
+main();
+
+// generate team profile

@@ -7,7 +7,7 @@ class Employee {
     }
 
     getName(){
-        return this.name.toUpperCase();
+        return this.name;
     }
 
     getId(){
