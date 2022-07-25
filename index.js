@@ -1,16 +1,21 @@
+// import inquirer
 const inquirer = require('inquirer');
-
+// constructors
 const Manager = require('./src/employees/manager');
 const Engineer = require('./src/employees/engineer');
 const Intern = require('./src/employees/intern');
+// helper function
 const generateHTML = require('./src/generate-html/generate-html');
+// path and file system always handy
 const fs = require('fs');
 const path = require('path');
 
+// empty array to push to
 const employees = [];
+// adding output directory
 const outputtedHtmlFile = path.join(__dirname, 'output', 'team.html')
 
-
+// async function waits for
 async function main () {
     
     const managerRole = 'manager';
@@ -26,7 +31,7 @@ async function main () {
                 managerRole, engineerRole, internRole,
             ]
         },
-        // id, name, email
+        // id, name, email, questions applicable to all roles
         {
             type: 'input',
             message: 'What is the Employee ID?',
@@ -42,9 +47,8 @@ async function main () {
             message: `What is the Employee's name?`,
             name: 'name',
         },
-        
-        // manager
-        // office number
+        // three unique questions related to role asked via when function
+        // manager, office number
         {
             type: 'input',
             message: 'What is the office number?',
@@ -52,8 +56,7 @@ async function main () {
             when: (answers) => answers.role === managerRole,
         },
         
-        // engineer
-        // github
+        // engineer, github
         {
             type: 'input',
             message: `What is the Engineer's github username?`,
@@ -61,8 +64,7 @@ async function main () {
             when: (answers) => answers.role === engineerRole,
         },
         
-        // intern
-        // school
+        // intern, school
         {
             type: 'input',
             message: `What is the Intern's school?`,
@@ -85,19 +87,14 @@ async function main () {
     if(answers.role === managerRole){
         employees.push(new Manager(answers.id, answers.email, answers.name, answers.number));
     }
-
     if(answers.role === engineerRole){
         employees.push(new Engineer(answers.id, answers.email, answers.name, answers.github));
     }
-
     if(answers.role === internRole){
         employees.push(new Intern(answers.id, answers.email, answers.name, answers.school));
     }
 
-
-console.log(employees)
-
-
+    // console.log(employees)
     
     // once the user terminates, we will generate the html based on all the employees collected
     if(!answers.add){
@@ -109,9 +106,6 @@ console.log(employees)
     }else{
         await main();
     }
-
 }
 
 main();
-
-// generate team profile
