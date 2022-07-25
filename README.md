@@ -34,9 +34,17 @@ Testing via jest is required to ensure each unit of the application is working a
 
 ## Profile Generator Visuals
 
-![name](/assets/images/)
-![name](/assets/images/)
-![name](/assets/images/)
+Using when function to ask questions as per role
+![unique questions as per role](/src/images/inquirer-when.png)
+
+Writing tests to verify constructor classes
+![tests](/src/images/test.png)
+
+HTML template to be filled
+![template](/src/images/template.png)
+
+Example of outputted HTML document
+![outputted HTML](/src/images/generated-html.png)
 
 
 ## Things i want to work on
@@ -45,9 +53,9 @@ Things are really starting to ramp up and we are starting to build some apps wit
 
 After generating the last assignment via back ticks, and this assignment through a template, i'd definitely like to spend more time around getting comfortable exporting to a template. I personally feel it would be easier to make apps scalable that way.
 
-Some time is needed arounded unit testing and understanding the syntax behind it.
+Some time is needed arounded unit testing and understanding the syntax behind it to write more detailed tests to help refining code.
 
 ## Links to Repository and Deployed Video
 
 - Repository - [Clarky's Repo](https://github.com/Clarky117/Team-Profile-Generator)
-- Live Video - [Team Profile Generator](youtubelink)
+- Live Video - [Team Profile Generator](https://youtu.be/3YZ2iaGAK9I)
