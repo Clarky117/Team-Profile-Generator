@@ -12,7 +12,7 @@
   
 ## Description
 
-In week 10 of the UWA coding bootcamp we have been tasked with building a team profile generator for a software engineering team that displays summaries of each person.
+A team profile generator for a software engineering team that displays summaries of each person.
 
 ## Key Points
 
